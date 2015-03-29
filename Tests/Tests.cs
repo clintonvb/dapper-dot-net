@@ -2979,20 +2979,20 @@ end");
         public void TestDoubleDecimalConversions_SO18228523_RightWay()
         {
             var row = connection.Query<HasDoubleDecimal>(
-                "select cast(1 as float) as A, cast(2 as float) as B, cast(3 as decimal) as C, cast(4 as decimal) as D").Single();
+                "select cast(1 as float) as A, cast(2.7 as float) as B, cast(3.85 as decimal(5,2)) as C, cast(4.2 as decimal(5,2)) as D").Single();
             row.A.Equals(1.0);
-            row.B.Equals(2.0);
-            row.C.Equals(3.0M);
-            row.D.Equals(4.0M);
+            row.B.Equals(2.7);
+            row.C.Equals(3.85M);
+            row.D.Equals(4.2M);
         }
         public void TestDoubleDecimalConversions_SO18228523_WrongWay()
         {
             var row = connection.Query<HasDoubleDecimal>(
-                "select cast(1 as decimal) as A, cast(2 as decimal) as B, cast(3 as float) as C, cast(4 as float) as D").Single();
-            row.A.Equals(1.0);
-            row.B.Equals(2.0);
-            row.C.Equals(3.0M);
-            row.D.Equals(4.0M);
+                "select cast(1.01 as decimal(5,2)) as A, cast(2.7 as decimal(5,2)) as B, cast(3.85 as float) as C, cast(4 as float) as D").Single();
+            row.A.Equals(1.01M);
+            row.B.Equals(2.7M);
+            row.C.Equals(3.85);
+            row.D.Equals(4.0);
         }
         public void TestDoubleDecimalConversions_SO18228523_Nulls()
         {
